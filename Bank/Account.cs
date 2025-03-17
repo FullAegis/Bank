@@ -5,8 +5,6 @@ public class Account(in string number) {
   protected decimal _balance = 0.0m;
   protected Lock _lock = new();
   
-  public static bool Equals(in Account account1, in Account account2) {
-    
-  }
-
+  public override string ToString() => $"Account Number: {Number}\nBalance: {_balance}:";
+  public override bool Equals(object? obj) => obj is Account a && Number == a.Number;
 }
