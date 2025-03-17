@@ -1,5 +1,6 @@
 using System;
 using static System.Console;
+using Bank.AccountTypes;
 
 namespace Bank;
 public static class Program {
@@ -7,8 +8,8 @@ public static class Program {
     var iban = "BE02953715721640";
     var bank = new Bank("OXO");
     bank.Add(new CurrentAccount(iban));
-    WriteLine(bank[iban]);
-    var nonAccount = bank["nope"];
+    WriteLine(bank[number: iban]);
+    var nonAccount = bank[number: "nope"];
     WriteLine(nonAccount?.ToString() ?? "nope");
   }
 }

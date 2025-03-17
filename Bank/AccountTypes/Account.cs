@@ -1,6 +1,16 @@
+using Bank.Users; // For Person
+
 namespace Bank.AccountTypes;
-public abstract class Account(in string number) {
-  public string Number { get; init; } = number.ToUpper();
+public abstract class Account {
+  public string Number { get; protected init; }
+  public decimal Balance { get; protected set; }
+  public User Owner { get; protected set; }
+  
+  protected Account(in string number, decimal balance, User owner) {
+    Number = number;
+    Balance = balance;
+    Owner = owner;
+  }
   
   /// <summary>
   /// This overload takes in an account number.
