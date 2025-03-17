@@ -14,5 +14,9 @@ public class Bank(in string name) {
   public void Add(in CurrentAccount account) {
     _currentAccounts.Add(account);
   }
+  
+  public void RemoveCurrentAccount(in string number) {
+    _currentAccounts.Remove(this[number]);
+  }
 }
 
