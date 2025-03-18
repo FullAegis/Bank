@@ -1,25 +1,15 @@
-using System;
-
 namespace Bank.Users;
-public sealed class Person : User {
-  public string FirstName { get; set; }
-  public string LastName  { get; set; }
-  public DateTime Birthday { get;  private init; }
-  
-  private Person() {
-    // No call to base()
-    FirstName = "NOT A PERSON";
-    LastName = "N/A";
-    Birthday = DateTime.UnixEpoch;
+using System; // DateTime
+
+public sealed class Person(string firstname, string lastname, DateTime birthday) : User {
+  public string FirstName { get; set; } = firstname;
+  public string LastName  { get; set; } = lastname;
+  public DateTime Birthday { get;  private init; } = birthday;
+
+  private Person() : this("NOT A PERSON", "N/A", DateTime.UnixEpoch) {
   }
   public static readonly Person None = new();
-  
-  public Person(string firstname, string lastname, DateTime birthday) : base() {
-    FirstName = firstname;
-    LastName = lastname;
-    Birthday = birthday;
-  }
-  
+
   public override string ToString()
-    => $"{LastName.ToUpper()} {FirstName} ({Birthday.Date.ToString("s")})"; 
+    => $"{LastName.ToUpper()} {FirstName} ({Birthday.Date:s})"; 
 }

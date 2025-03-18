@@ -25,8 +25,7 @@ public class CurrentAccountTests
   [Test]
   public void Constructor_ValidAccountNumberAndOwner_CreatesAccountWithZeroBalance()
   {
-    // Assert (Using Constraint Model - NUnit 4 style)
-    Assert.That(_account.Balance, Is.EqualTo(0));
+    Assert.That(_account.Balance == 0, Is.True);
     Assert.That(_account.Number, Is.EqualTo(_accountNumber));
     Assert.That(_account.Owner, Is.EqualTo(_owner));
   }
@@ -41,7 +40,7 @@ public class CurrentAccountTests
     _account.Deposit(depositAmount);
 
     // Assert (Constraint Model)
-    Assert.That(_account.Balance, Is.EqualTo(depositAmount));
+    Assert.That(_account.Balance.Value, Is.EqualTo(depositAmount));
   }
 
   [Test]
@@ -65,7 +64,7 @@ public class CurrentAccountTests
     _account.Deposit(depositAmount);
 
     // Assert
-    Assert.That(_account.Balance, Is.EqualTo(initialBalance));
+    Assert.That((decimal) _account.Balance, Is.EqualTo(initialBalance));
   }
 
   [Test]
@@ -80,11 +79,20 @@ public class CurrentAccountTests
   [Test]
   public void Withdraw_InvalidAmount_ThrowsArgumentOutOfRangeException() {
     // Arrange
-    var expected = _account.Balance;
+    decimal expected = _account.Balance;
     var amount = -100m;
     // Act & Assert
     Assert.That(() => _account.Withdraw(amount), Throws.TypeOf<ArgumentOutOfRangeException>());
-    Assert.That(_account.Balance, Is.EqualTo(expected));
+    Assert.That(_account.Balance.Value, Is.EqualTo(expected));
+  }
+  
+  [Test]
+  public void Withdraw_ValidAmountOverBalance_DoesntThrow() {
+    // Arrange
+    var expected = _account.Balance;
+    var amount = expected.Value + _account.CreditLimit;
+    // Act & Assert
+    Assert.That(() => _account.Withdraw(amount),Is.EqualTo(expected - amount));
   }
 
   [Test]
@@ -97,10 +105,11 @@ public class CurrentAccountTests
     string accountString = _account.ToString();
 
     // Assert (Using NUnit 4 String Constraints)
-    Assert.That(accountString, Does.Contain("Current Account Number: 1234567890"));
-    Assert.That(accountString, Does.Contain("Account Holder: DOE John (1990-01-01T00:00:00)"));
-    Assert.That(accountString, Does.Contain("Balance: "));
     Assert.That(accountString, Does.Contain("Owner ID:"));
+    Assert.That(accountString, Does.Contain("Account Holder: DOE John (1990-01-01T00:00:00)"));
+    Assert.That(accountString, Does.Contain("Account Number: 1234567890"));
+    Assert.That(accountString, Does.Contain("Balance: "));
+    Assert.That(accountString, Does.Contain("Credit Limit: "));
   }
 
   [Test]

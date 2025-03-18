@@ -4,55 +4,55 @@ using Bank.Users;
 
 namespace Bank.AccountTypes;
 public class CurrentAccount : Account {
-  public CurrentAccount(in string number, Person owner, in decimal balance = 0m)
+  public Currency CreditLimit { get; protected set; }
+  public CurrentAccount(in string number, Person owner, in decimal balance, in decimal creditLimit)
     : base(number, balance, owner)
+  {
+    CreditLimit = creditLimit;
+  }
+  public CurrentAccount(in string number, in decimal balance, in decimal creditLimit)
+    : this(number, Person.None, balance, creditLimit)
   {}
-  public CurrentAccount(in string number, in decimal balance = 0m)
-    :this(number, Person.None, balance)
+  public CurrentAccount(in string number, Person owner, in decimal balance = 0) 
+    : this(number, owner, balance, 0)
   {}
 
-  private static class Money {
-    public static readonly Lock Lock = new();
-    public static long Read(in decimal x) => decimal.ToOACurrency(x);
-    public static decimal Write(in long x) => decimal.FromOACurrency(x);
-  }
-  
+  private readonly Lock _lock = new();
   public override decimal Deposit(in decimal amount) {
-    var sum = Money.Read(amount);
-    if (sum < 0)
-      throw new ArgumentOutOfRangeException("amount", "Cannot deposit negative amount.");
-      
+    long sum = Currency.PositiveOnly(amount);
     long bal;
-    lock (Money.Lock) {
-      bal = Money.Read(Balance);  // Read
+    lock (_lock) {
+      bal = Balance;  // Read
       bal = checked (sum + bal);  // Modify
-      Balance = Money.Write(bal); // Write
+      Balance = bal; // Write
     }
-    return bal;
+    return (Currency) bal;
   }
 
   public override decimal Withdraw(in decimal amount) {
-    var sum = Money.Read(amount);
-    if (sum < 0)
-      throw new ArgumentOutOfRangeException("amount", "Cannot withdraw negative amount.");
-    
-    long bal;
-    lock (Money.Lock) {
-      bal = Money.Read(Balance);
-      if (bal < sum)
-        throw new OperationCanceledException("Not enough money in balance.");
-      bal = checked (bal - sum);
-      Balance = Money.Write(bal);
-    }
-    return bal;
+    long sum = Currency.PositiveOnly(amount);
+    long bal, limit;
+    lock (_lock) {
+      bal = Balance; // Read
+      limit = CreditLimit;
+      
+      if (sum > checked (limit + bal)) {
+        throw new ArgumentOutOfRangeException("amount", "Credit limit too low for transaction.");
+      }
+      
+      bal = checked (bal - sum); // Modify
+      Balance = bal;             // Write
+    } // lock
+    return (Currency) bal;
   }
 
   public override string ToString() => $"""
-    Current Account Number: {Number}
-    Account Holder: {Owner.ToString()}
-    Balance: {Balance.ToString("C", System.Globalization.CultureInfo.CurrentCulture)}
     Owner ID: {Owner.id}
-  """;
+    Account Holder: {Owner.ToString()}
+    Account Number: {Number}
+    Balance: {Balance.ToString()}
+    Credit Limit: {CreditLimit.ToString()}
+    """;
   public override bool Equals(in string accountNumber)
     => accountNumber == Number;
   public static bool operator ==(in CurrentAccount self, in string number)
