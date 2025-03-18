@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Numerics;
 
 namespace Bank.AccountTypes;
-public record struct Currency {
-  private static CultureInfo _locale = CultureInfo.GetCultureInfo("fr-BE", true);
-  private long _value;
+public readonly record struct Currency {
+  static readonly CultureInfo Locale = CultureInfo.GetCultureInfo("fr-BE", true);
+  readonly long _value;
   public decimal Value {
     get => decimal.FromOACurrency(_value);
     private init => _value = decimal.ToOACurrency(value);
