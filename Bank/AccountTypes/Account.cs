@@ -19,4 +19,5 @@ public abstract class Account {
   /// <returns>true if <paramref name="accountNumber"/> is equal
   /// to "P:Bank.Account.Number" of this instance.</returns>
   public abstract bool Equals(in string accountNumber);
+  public abstract decimal Deposit(in decimal amount);
 }
