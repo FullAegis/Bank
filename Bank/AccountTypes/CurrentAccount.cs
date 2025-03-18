@@ -30,6 +30,22 @@ public class CurrentAccount : Account {
     return newBalance;
   }
 
+  public override decimal Withdraw(in decimal amount) {
+    var sum = Money.Read(amount);
+    if (sum < 0)
+      throw new ArgumentOutOfRangeException("amount", "Cannot withdraw negative amount.");
+    
+    long bal;
+    lock (Money.Lock) {
+      bal = Money.Read(Balance);
+      if (bal < sum)
+        throw new OperationCanceledException("Not enough money in balance.");
+      bal = checked (bal - sum);
+      Balance = Money.Write(bal);
+    }
+    return bal;
+  }
+
   public override string ToString() => $"""
     Current Account Number: {Number}
     Account Holder: {Owner.ToString()}

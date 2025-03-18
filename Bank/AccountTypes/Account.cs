@@ -20,4 +20,5 @@ public abstract class Account {
   /// to "P:Bank.Account.Number" of this instance.</returns>
   public abstract bool Equals(in string accountNumber);
   public abstract decimal Deposit(in decimal amount);
+  public abstract decimal Withdraw(in decimal amount);
 }
