@@ -24,5 +24,5 @@ public readonly record struct Currency {
   public static implicit operator Currency(long val) => (Currency) decimal.FromOACurrency(val);
   public static implicit operator long(Currency val) => val._value;
 
-  public override string ToString() => $"{Value.ToString("C", _locale)}";
+  public override string ToString() => $"{Value.ToString("C", Locale)}";
 }
