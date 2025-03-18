@@ -28,10 +28,10 @@ public class PersonTests
   public void ToString_ReturnsFormattedString()
   {
     // Arrange
-    string firstName = "Bob";
-    string lastName = "Johnson";
-    DateTime birthday = new DateTime(1992, 8, 20);
-    Person person = new Person(firstName, lastName, birthday);
+    var firstName = "Bob";
+    var lastName = "Johnson";
+    var birthday = new DateTime(1992, 8, 20);
+    var person = new Person(firstName, lastName, birthday);
 
     // Act
     string personString = person.ToString();
