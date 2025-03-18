@@ -8,7 +8,10 @@ public static class Program {
     var iban = "BE02953715721640";
     var bank = new Bank("OXO");
     bank.Add(new CurrentAccount(iban));
-    WriteLine(bank[number: iban]);
+    var account = bank[number: iban];
+    account.Deposit(1e6m);
+    WriteLine(account);
+    
     var nonAccount = bank[number: "nope"];
     WriteLine(nonAccount?.ToString() ?? "nope");
   }
