@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Bank.Users;
 
@@ -11,23 +12,24 @@ public class CurrentAccount : Account {
     :this(number, Person.None, balance)
   {}
 
-  private readonly object _lock = new();
+  private static class Money {
+    public static readonly Lock Lock = new();
+    public static long Read(in decimal x) => decimal.ToOACurrency(x);
+    public static decimal Write(in long x) => decimal.FromOACurrency(x);
+  }
+  
   public override decimal Deposit(in decimal amount) {
-    // I can't have a `const long sum = decimal.ToOACurrency(amount)`. Local function it is.
-    // ToOACurrency(x) -> (long)(x * 10_000)
-    static long read(in decimal x) => decimal.ToOACurrency(x);
-    static decimal write(long x) => decimal.FromOACurrency(x);
-    var sum = read(amount);
+    var sum = Money.Read(amount);
     if (sum < 0)
       throw new ArgumentOutOfRangeException("amount", "Cannot deposit negative amount.");
       
-    long newBalance;
-    lock (_lock) {
-      newBalance = read(Balance);  // Read
-      newBalance += sum;           // Modify
-      Balance = write(newBalance); // Write
+    long bal;
+    lock (Money.Lock) {
+      bal = Money.Read(Balance);  // Read
+      bal = checked (sum + bal);  // Modify
+      Balance = Money.Write(bal); // Write
     }
-    return newBalance;
+    return bal;
   }
 
   public override decimal Withdraw(in decimal amount) {
