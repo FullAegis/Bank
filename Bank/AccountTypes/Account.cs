@@ -12,13 +12,9 @@ public abstract class Account {
     Owner = owner;
   }
   
-  /// <summary>
-  /// This overload takes in an account number.
-  /// </summary>
-  /// <param name="accountNumber"></param>
-  /// <returns>true if <paramref name="accountNumber"/> is equal
-  /// to "P:Bank.Account.Number" of this instance.</returns>
-  public abstract bool Equals(in string accountNumber);
   public abstract decimal Deposit(in decimal amount);
   public abstract decimal Withdraw(in decimal amount);
+  public static bool Equals(Account acc, in string accountNumber) => acc.Number == accountNumber;
+  public static bool operator ==(in Account self, in string number) => Equals(self, number);
+  public static bool operator !=(in Account self, in string number) => !(self == number);
 }

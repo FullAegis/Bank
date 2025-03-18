@@ -53,10 +53,6 @@ public class CurrentAccount : Account {
     Balance: {Balance.ToString()}
     Credit Limit: {CreditLimit.ToString()}
     """;
-  public override bool Equals(in string accountNumber)
-    => accountNumber == Number;
-  public static bool operator ==(in CurrentAccount self, in string number)
-    => self.Equals(number);
-  public static bool operator !=(in CurrentAccount self, in string number)
-    => !(self == number);
+
+  public override bool Equals(object? obj) => Account.Equals(obj, Number);
 }
