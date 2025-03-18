@@ -14,7 +14,7 @@ public record struct Currency {
 
   public static Currency PositiveOnly(Currency self) {
     if (self._value < 0)
-      throw new ArgumentOutOfRangeException("self", "Value must be positive");
+      throw new ArgumentOutOfRangeException(nameof(self), "Value must be positive");
     return self;
   }
   
