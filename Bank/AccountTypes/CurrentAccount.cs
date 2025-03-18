@@ -37,7 +37,7 @@ public class CurrentAccount : Account {
       limit = CreditLimit;
       
       if (sum > checked (limit + bal)) {
-        throw new ArgumentOutOfRangeException("amount", "Credit limit too low for transaction.");
+        throw new ArgumentOutOfRangeException(nameof(amount), "Credit limit too low for transaction.");
       }
       
       bal = checked (bal - sum); // Modify
