@@ -18,7 +18,7 @@ public record struct Currency {
     return self;
   }
   
-  public static implicit operator Currency(decimal val) => new Currency { Value = val };
+  public static implicit operator Currency(decimal val) => new() { Value = val };
   public static implicit operator decimal(Currency val) => val.Value;
   
   public static implicit operator Currency(long val) => (Currency) decimal.FromOACurrency(val);
