@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Bank.AccountTypes;
 public readonly record struct Currency {
-  static readonly CultureInfo Locale = CultureInfo.GetCultureInfo("fr-BE", true);
+  internal static readonly CultureInfo Locale = CultureInfo.GetCultureInfo("fr-BE", true);
   readonly long _value;
   public decimal Value {
     get => decimal.FromOACurrency(_value);
