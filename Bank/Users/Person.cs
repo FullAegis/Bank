@@ -2,8 +2,6 @@ using System; // DateTime
 using Bank.AccountTypes;
 
 namespace Bank.Users;
-using System; // DateTime
-
 public sealed class Person(string firstname, string lastname, DateTime birthday) : User {
   public static readonly Person None = new("NOT A PERSON", "N/A", DateTime.UnixEpoch);
   
