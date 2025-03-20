@@ -6,8 +6,8 @@ using System; // DateTime
 
 public sealed class Person(string firstname, string lastname, DateTime birthday) : User {
   public string FirstName { get; set; } = firstname;
-  public string LastName  { get; set; } = lastname;
-  public DateTime Birthday { get;  private init; } = birthday;
+  public string LastName { get; set; } = lastname;
+  public DateTime Birthday { get; init; } = birthday;
 
   private Person() : this("NOT A PERSON", "N/A", DateTime.UnixEpoch) {
   }
