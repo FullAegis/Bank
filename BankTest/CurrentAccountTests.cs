@@ -5,7 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace BankTests;
-// Tests using the Arrange, Act, Assert methodology
+// Tests using the Arrange, Act, Assert methodology.
 [TestFixture] public class CurrentAccountTests {
   private CurrentAccount _account;
   private string _accountNumber;
