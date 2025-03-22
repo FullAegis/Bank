@@ -9,7 +9,7 @@ public static class Program {
     var iban = "BE02953715721640";
     var bank = new Bank("OXO");
     
-    var nate = new Person("Nathan", "Whitehat", DateTime.Parse("1995-11-30"));
+    var nate = new Person("Nathan", "Whitehat", "1995-11-30");
     bank.Add(new CurrentAccount(number: iban, owner: nate, balance: 0m, creditLimit: 5000)); 
       
     var account = bank[number: iban];
