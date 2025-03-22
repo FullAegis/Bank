@@ -59,4 +59,7 @@ public class CurrentAccount : Account {
   public override bool Equals(object? obj) => Equals((Account?) obj);
   public override bool Equals(string? other) => Number.Equals(other);
   public override int GetHashCode() => Number.GetHashCode();
+
+  public static bool operator ==(in CurrentAccount self, in string number) => self.Equals(number);
+  public static bool operator !=(in CurrentAccount self, in string number) => !self.Equals(number);
 }
