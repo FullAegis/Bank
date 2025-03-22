@@ -18,7 +18,7 @@ public class CurrentAccountTests
   {
     // Initialize a new CurrentAccount object before each test
     _accountNumber = "1234567890";
-    _owner = new Person("John", "Doe", new DateTime(1990, 1, 1)); // Provide a birthday
+    _owner = new Person("John", "Doe", "13 Septembre 1977"); // Provide a birthday
     _account = new CurrentAccount(_accountNumber, _owner);
   }
 
@@ -106,7 +106,7 @@ public class CurrentAccountTests
 
     // Assert (Using NUnit 4 String Constraints)
     Assert.That(accountString, Does.Contain("Owner ID:"));
-    Assert.That(accountString, Does.Contain("Account Holder: DOE John (1990-01-01T00:00:00)"));
+    Assert.That(accountString, Does.Contain("Account Holder: DOE John (13/09/1977)"));
     Assert.That(accountString, Does.Contain("Account Number: 1234567890"));
     Assert.That(accountString, Does.Contain("Balance: "));
     Assert.That(accountString, Does.Contain("Credit Limit: "));

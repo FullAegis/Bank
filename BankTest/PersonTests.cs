@@ -26,7 +26,7 @@ namespace BankTests;
     // Act
     var personString = person.ToString();
     // Assert
-    Assert.That(personString, Is.EqualTo("JOHNSON Bob (1992-08-20T00:00:00)"));
+    Assert.That(personString, Is.EqualTo("JOHNSON Bob (20/08/1992)"));
   }
 
   [Test] public void None_ReturnsDefaultPerson() {
