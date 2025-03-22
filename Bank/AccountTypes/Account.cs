@@ -5,13 +5,10 @@ namespace Bank.AccountTypes;
 public abstract class Account(in string number, decimal balance, Person owner)
   : IEquatable<string>, IEquatable<Account>
 {
-  
-  protected Account(in string number, decimal balance, Person owner) {
-    Number = number;
-    Balance = balance;
-    Owner = owner;
-  }
-  
+  public string Number { get; protected init; } = number;
+  public Person Owner { get; protected set; } = owner;
+  public Currency Balance { get; protected set; } = balance;
+
   public abstract decimal Deposit(in decimal amount);
   public abstract decimal Withdraw(in decimal amount);
   
