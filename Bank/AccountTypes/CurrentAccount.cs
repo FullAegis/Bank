@@ -19,8 +19,8 @@ public class CurrentAccount : Account {
 
   private readonly Lock _lock = new();
   public override decimal Deposit(in decimal amount) {
-    long sum = Currency.PositiveOnly(amount);
-    long bal;
+    var sum = (long) Currency.EnsurePositive(amount);
+    var bal = Currency.EnsurePositive(0);
     lock (_lock) {
       bal = Balance;  // Read
       bal = checked (sum + bal);  // Modify
@@ -30,7 +30,7 @@ public class CurrentAccount : Account {
   }
 
   public override decimal Withdraw(in decimal amount) {
-    long sum = Currency.PositiveOnly(amount);
+    long sum = Currency.EnsurePositive(amount);
     long bal, limit;
     lock (_lock) {
       bal = Balance; // Read
@@ -43,7 +43,8 @@ public class CurrentAccount : Account {
       bal = checked (bal - sum); // Modify
       Balance = bal;             // Write
     } // lock
-    return (Currency) bal;
+
+    return (Currency)bal; 
   }
 
   public override string ToString() => $"""
