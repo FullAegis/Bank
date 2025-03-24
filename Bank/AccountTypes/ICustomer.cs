@@ -1,6 +1,6 @@
 namespace Bank.AccountTypes;
 public interface ICustomer {
-  public abstract Currency Balance { get; set; }
-  public abstract decimal Withdraw(in decimal amount);
-  public abstract decimal Deposit(in decimal amount);
+  public Currency Balance { get; set; }
+  public decimal Withdraw(in decimal amount);
+  public decimal Deposit(in decimal amount);
 }
