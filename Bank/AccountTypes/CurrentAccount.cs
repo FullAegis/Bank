@@ -26,7 +26,7 @@ public class CurrentAccount : Account {
       bal = checked (sum + bal);  // Modify
       Balance = bal; // Write
     }
-    return (Currency) bal;
+    return bal;
   }
 
   public override decimal Withdraw(in decimal amount) {
