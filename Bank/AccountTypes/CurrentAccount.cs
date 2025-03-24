@@ -3,7 +3,9 @@ using System.Threading;
 using Bank.Users;
 
 namespace Bank.AccountTypes;
-public class CurrentAccount : Account {
+public class CurrentAccount : Account, ICustomer {
+  public Currency Balance { get; set; }
+
   public Currency CreditLimit { get; protected set; }
   public CurrentAccount(in string number, Person owner, in decimal balance, in decimal creditLimit)
     : base(number, balance, owner)
@@ -18,7 +20,7 @@ public class CurrentAccount : Account {
   {}
 
   private readonly Lock _lock = new();
-  public override decimal Deposit(in decimal amount) {
+  public decimal Deposit(in decimal amount) {
     var sum = (long) Currency.EnsurePositive(amount);
     var bal = Currency.EnsurePositive(0);
     lock (_lock) {
@@ -29,7 +31,7 @@ public class CurrentAccount : Account {
     return bal;
   }
 
-  public override decimal Withdraw(in decimal amount) {
+  public decimal Withdraw(in decimal amount) {
     long sum = Currency.EnsurePositive(amount);
     long bal, limit;
     lock (_lock) {

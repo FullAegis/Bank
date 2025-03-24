@@ -7,10 +7,6 @@ public abstract class Account(in string number, decimal balance, Person owner)
 {
   public string Number { get; protected init; } = number;
   public Person Owner { get; protected set; } = owner;
-  public Currency Balance { get; protected set; } = balance;
-
-  public abstract decimal Deposit(in decimal amount);
-  public abstract decimal Withdraw(in decimal amount);
   
   public abstract override bool Equals(object? obj);
   public abstract bool Equals(Account? other);
