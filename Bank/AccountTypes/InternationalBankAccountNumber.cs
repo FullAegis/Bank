@@ -3,8 +3,8 @@ using System;
 using System.Linq; // For: Enumerable<T>.{ Where(Func<T,bool>), Skip/Take(int), To/Array/String() }
 using AccountTypes.Exceptions; // For: InvalidIban
 
-public record struct InternationalBankAccountNumber : IEquatable<string> {
-  private readonly string Init { get; init; }
+public readonly record struct InternationalBankAccountNumber : IEquatable<string> {
+  private string Init { get; init; }
   
   public InternationalBankAccountNumber(in string iban) {
     Init = new(iban.ToUpper().Where(char.IsLetterOrDigit).ToArray());
@@ -31,8 +31,8 @@ public record struct InternationalBankAccountNumber : IEquatable<string> {
     }
   }
 
-  public readonly bool Equals(InternationalBankAccountNumber other) => Init == other.Init;
-  public readonly bool Equals(string? iban) {
+  public bool Equals(InternationalBankAccountNumber other) => Init == other.Init;
+  public bool Equals(string? iban) {
     if (!string.IsNullOrEmpty(iban)) try {
       return Equals(other: new(iban ?? ""));
     } catch (InvalidIban) {
@@ -41,7 +41,7 @@ public record struct InternationalBankAccountNumber : IEquatable<string> {
     } 
     return false;
   }
-  public readonly override int GetHashCode() => Init.GetHashCode();
+  public override int GetHashCode() => Init.GetHashCode();
   public override string ToString() => string.Join(' ', Init.Chunk(size: 4)
                                                             .Select(static x => new string(x)));
 }
