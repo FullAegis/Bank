@@ -19,7 +19,7 @@ public record struct InternationalBankAccountNumber {
                       ;
       
       // 4. Interpret the string as a decimal integer (log((10^32)-1)/log(2) = 106.30 so Int128)
-      var checksum = new Int128(0, 0);
+      var checksum = new Int128();
       foreach (var c in _iban) {
         // 3. Replace each letter in the string with two digits, thereby expanding the string
         if (char.IsLetter(c)) { checksum = (checksum * 100) + (c - 'A' + 10); }
