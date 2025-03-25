@@ -9,12 +9,14 @@ namespace BankTests;
 [TestFixture] public class CurrentAccountTests {
   private CurrentAccount _account;
   private string _accountNumber;
+  private string _formattedNumber;
   private Person _owner;
 
   [SetUp]
   public void Setup() {
     // Initialize a new CurrentAccount object before each test
-    _accountNumber = "1234567890";
+    _accountNumber = "DE91100000000123456789"; // Valid IBAN
+    _formattedNumber = "DE91 1000 0000 0123 4567 89";
     _owner = new("John", "Doe", "13 Septembre 1977");  // Provide a birthday
     _account = new(_accountNumber, _owner);
   }
@@ -80,35 +82,42 @@ namespace BankTests;
 
     Assert.That(accountString, Does.Contain("Owner ID:"));
     Assert.That(accountString, Does.Contain("Account Holder: DOE John (13/09/1977)"));
-    Assert.That(accountString, Does.Contain("Account Number: 1234567890"));
+    Assert.That(accountString, Does.Contain($"Account Number: {_formattedNumber}"));
     Assert.That(accountString, Does.Contain("Balance: "));
     Assert.That(accountString, Does.Contain("Credit Limit: "));
   }
 
   [Test]
   public void Equals_SameAccountNumber_ReturnsTrue() {
-    var sameAccountNumber = "1234567890";
+    var sameAccountNumber = _accountNumber;
     bool areEqual = _account.Equals(sameAccountNumber);
     Assert.That(areEqual, Is.True);
   }
 
   [Test]
   public void Equals_DifferentAccountNumber_ReturnsFalse() {
-    var differentAccountNumber = "0987654321";
+    var differentAccountNumber = "FR1420041010050500013M02606";
     var areEqual = _account.Equals(differentAccountNumber);
     Assert.That(areEqual, Is.False);
   }
 
   [Test]
   public void EqualityOperator_SameAccountNumber_ReturnsTrue() {
-    var sameAccountNumber = "1234567890";
+    var sameAccountNumber = "DE91100000000123456789";
     var areEqual = _account == sameAccountNumber;
     Assert.That(areEqual, Is.True);
   }
 
   [Test]
-  public void InequalityOperator_DifferentAccountNumber_ReturnsTrue() {
-    var differentAccountNumber = "0987654321";
+  public void InequalityOperator_DifferentValidAccountNumber_ReturnsTrue() {
+    var differentAccountNumber = "FR1420041010050500013M02606";
+    var areNotEqual = _account != differentAccountNumber;
+    Assert.That(areNotEqual, Is.True);
+  }  
+  
+  [Test]
+  public void InequalityOperator_DifferentInvalidAccountNumber_ReturnsTrue() {
+    var differentAccountNumber = "FR9999988887777666655554444";
     var areNotEqual = _account != differentAccountNumber;
     Assert.That(areNotEqual, Is.True);
   }

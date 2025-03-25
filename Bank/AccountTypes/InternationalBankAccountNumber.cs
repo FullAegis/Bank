@@ -3,7 +3,7 @@ using System;
 using System.Linq; // For: Enumerable<T>.{ Where(Func<T,bool>), Skip/Take(int), To/Array/String() }
 using AccountTypes.Exceptions; // For: InvalidIban
 
-public record struct InternationalBankAccountNumber {
+public record struct InternationalBankAccountNumber : IEquatable<string> {
   private readonly string Init { get; init; }
   
   public InternationalBankAccountNumber(in string iban) {
@@ -30,4 +30,18 @@ public record struct InternationalBankAccountNumber {
       }
     }
   }
+
+  public readonly bool Equals(InternationalBankAccountNumber other) => Init == other.Init;
+  public readonly bool Equals(string? iban) {
+    if (!string.IsNullOrEmpty(iban)) try {
+      return Equals(other: new(iban ?? ""));
+    } catch (InvalidIban) {
+      // Compare with invalid IBAN, not an error.
+      Console.Error.WriteLine($"Comparing '{Init}' against invalid IBAN '{iban}'.");
+    } 
+    return false;
+  }
+  public readonly override int GetHashCode() => Init.GetHashCode();
+  public override string ToString() => string.Join(' ', Init.Chunk(size: 4)
+                                                            .Select(static x => new string(x)));
 }
