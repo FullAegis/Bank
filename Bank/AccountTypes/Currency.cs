@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-
 namespace Bank.AccountTypes;
 public readonly record struct Currency {
   internal static readonly CultureInfo Locale = CultureInfo.GetCultureInfo("fr-BE", true);
