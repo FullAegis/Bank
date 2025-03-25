@@ -12,7 +12,7 @@ public readonly record struct Currency {
     private init => _value = decimal.ToOACurrency(value);
   }
 
-  public static Currency PositiveOnly(Currency self) {
+  public static Currency EnsurePositive(in Currency self) {
     if (self._value < 0)
       throw new ArgumentOutOfRangeException(nameof(self), "Value must be positive");
     return self;
